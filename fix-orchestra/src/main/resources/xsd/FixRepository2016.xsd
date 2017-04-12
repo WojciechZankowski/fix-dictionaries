@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fixr="http://fixprotocol.io/2016/fixrepository" xmlns:dcterms="http://purl.org/dc/terms/" targetNamespace="http://fixprotocol.io/2016/fixrepository" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0-rc1">
+	<xs:annotation>
+		<xs:documentation>
+			FIX Repository standard structure of messages
+			© Copyright 2016 FIX Protocol Limited
+			Creative Commons Attribution-NoDerivatives 4.0
+			International Public License
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="repositorytypes2016.xsd"/>
+	<xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+	<xs:element name="abbreviations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="abbreviation" type="fixr:abbreviationType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="categories">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="category" type="fixr:categoryType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="codeSets">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="codeSet" type="fixr:codeSetType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="fixr:Name_t"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="components">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="component" type="fixr:componentType"/>
+				<xs:element name="group" type="fixr:groupType"/>
+			</xs:choice>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datatype">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fixr:mappedDatatype" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="annotation" type="fixr:annotation" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="fixr:Datatype_t" use="required"/>
+			<xs:attribute name="baseType" type="fixr:Datatype_t"/>
+			<xs:attributeGroup ref="fixr:entityAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datatypes">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fixr:datatype" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="fields">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="field" type="fixr:fieldType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="latestEP" type="fixr:EP_t"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="actors">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="actor" type="fixr:actorType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="actor">
+			<xs:selector xpath="fixr:actor"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
+		<xs:key name="actorKey">
+			<xs:selector xpath="fixr:actor"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:keyref name="actorKeyRef" refer="fixr:actorKey">
+			<xs:selector xpath="fixr:actor"/>
+			<xs:field xpath="@extends"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="protocol">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="fixr:actors" minOccurs="0"/>
+				<xs:element ref="fixr:components"/>
+				<xs:element ref="fixr:messages"/>
+			</xs:all>
+			<xs:attribute name="version" type="fixr:Version_t" use="required"/>
+			<xs:attribute name="guid" type="xs:string"/>
+			<xs:attribute name="hasComponents" type="xs:boolean" use="required"/>
+			<xs:attribute name="specUrl" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>Reference documentation</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="namespace" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>An associated namespace as URI</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="applVerId" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="repository">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="metadata" type="dcterms:elementOrRefinementContainer"/>
+				<xs:element ref="fixr:codeSets" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>May have more than one section of code sets, for example internal and external codes</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="fixr:abbreviations" minOccurs="0"/>
+				<xs:element ref="fixr:datatypes"/>
+				<xs:element ref="fixr:categories" minOccurs="0"/>
+				<xs:element ref="fixr:sections" minOccurs="0"/>
+				<xs:element ref="fixr:fields"/>
+				<xs:element ref="fixr:protocol" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>May have a section for each supported version of FIX or other protocol</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mappedDatatype">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fixr:mappedDatatype" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="annotation" type="fixr:annotation" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:datatypeGrp"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="message" type="fixr:messageType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+		<xs:unique name="messageId">
+			<xs:annotation>
+				<xs:documentation>Combination of message name and context must be
+					unique</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="fixr:message"/>
+			<xs:field xpath="@name"/>
+			<xs:field xpath="@context"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="sections">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="section" type="fixr:sectionType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="fixr:containerAttribGrp"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
