@@ -10,6 +10,11 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>fix-orchestra</module>
+        <module>fix-oanda</module>
+        <module>fix-interactive-brokers</module>
+        <module>fix-dukascopy</module>
+        <module>fix-mbtrading</module>
+        <module>fix-trading-technologies</module>
     </modules>
 
 </project>
