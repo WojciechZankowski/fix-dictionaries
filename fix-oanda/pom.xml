@@ -11,5 +11,51 @@
 
     <artifactId>fix-oanda</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.quickfixj</groupId>
+            <artifactId>quickfixj-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>oanda-fix42</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.quickfixj</groupId>
+                        <artifactId>quickfixj-codegenerator</artifactId>
+                        <version>1.6.3</version>
+                        <configuration>
+                            <dictFile>src/main/resources/OANDA_FIX42.xml</dictFile>
+                            <outputDirectory>${basedir}/src/main/java/</outputDirectory>
+                            <packaging>quickfix.oanda.fix42</packaging>
+                            <fieldPackage>quickfix.oanda.field</fieldPackage>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>oanda-fix44</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.quickfixj</groupId>
+                        <artifactId>quickfixj-codegenerator</artifactId>
+                        <version>1.6.3</version>
+                        <configuration>
+                            <dictFile>src/main/resources/OANDA_FIX44.xml</dictFile>
+                            <outputDirectory>${basedir}/src/main/java/</outputDirectory>
+                            <packaging>quickfix.oanda.fix44</packaging>
+                            <fieldPackage>quickfix.oanda.field</fieldPackage>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

@@ -83,6 +83,52 @@
 			<field name="EncodedTextLen" required="N" />
 			<field name="EncodedText" required="N" />
 		</message>
+		<message name="MarketDataRequest" msgtype="V" msgcat="app">
+			<field name="MDReqID" required="Y"/>
+			<field name="SubscriptionRequestType" required="Y"/>
+			<field name="MarketDepth" required="Y"/>
+			<field name="MDUpdateType" required="N"/>
+			<group name="NoMDEntryTypes" required="Y">
+				<field name="MDEntryType" required="Y"/>
+			</group>
+			<group name="NoRelatedSym" required="Y">
+				<field name="Symbol" required="Y"/>
+			</group>
+		</message>
+		<message name="MarketDataSnapshotFullRefresh" msgtype="W" msgcat="app">
+			<field name="MDReqID" required="N"/>
+			<field name="Symbol" required="Y"/>
+			<group name="NoMDEntries" required="Y">
+				<field name="MDEntryType" required="Y"/>
+				<field name="MDEntryPx" required="N"/>
+				<field name="MDEntrySize" required="N"/>
+				<field name="MDEntryDate" required="N"/>
+				<field name="MDEntryTime" required="N"/>
+				<field name="QuoteCondition" required="N"/>
+				<field name="FutSettDate" required="N"/>
+				<field name="Text" required="N"/>
+			</group>
+		</message>
+		<message name="MarketDataIncrementalRefresh" msgtype="X" msgcat="app">
+			<field name="MDReqID" required="N"/>
+			<group name="NoMDEntries" required="Y">
+				<field name="MDUpdateAction" required="Y"/>
+				<field name="MDEntryType" required="N"/>
+				<field name="Symbol" required="N"/>
+				<field name="MDEntryPx" required="N"/>
+				<field name="MDEntrySize" required="N"/>
+				<field name="MDEntryDate" required="N"/>
+				<field name="MDEntryTime" required="N"/>
+				<field name="QuoteCondition" required="N"/>
+				<field name="FutSettDate" required="N"/>
+				<field name="Text" required="N"/>
+			</group>
+		</message>
+		<message name="MarketDataRequestReject" msgtype="Y" msgcat="app">
+			<field name="MDReqID" required="Y"/>
+			<field name="MDReqRejReason" required="N"/>
+			<field name="Text" required="N"/>
+		</message>
 		<message name="NewOrderSingle" msgtype="D" msgcat="app">
 			<field name="ClOrdID" required="Y" />
 			<field name="Account" required="N" />
@@ -157,20 +203,13 @@
 		</message>
 		<message name="OrderCancelReject" msgtype="9" msgcat="app">
 			<field name="OrderID" required="Y" />
-			<field name="SecondaryOrderID" required="N" />
 			<field name="ClOrdID" required="Y" />
 			<field name="OrigClOrdID" required="Y" />
 			<field name="OrdStatus" required="Y" />
-			<field name="ClientID" required="N" />
-			<field name="ExecBroker" required="N" />
-			<field name="ListID" required="N" />
 			<field name="Account" required="N" />
-			<field name="TransactTime" required="N" />
 			<field name="CxlRejResponseTo" required="Y" />
 			<field name="CxlRejReason" required="N" />
 			<field name="Text" required="N" />
-			<field name="EncodedTextLen" required="N" />
-			<field name="EncodedText" required="N" />
 		</message>
 		<message name="OrderStatusRequest" msgtype="H" msgcat="app">
 			<field name="OrderID" required="N" />
@@ -276,6 +315,7 @@
 			<value enum="6" description="GOOD_TILL_DATE" />
 		</field>
 		<field number="60" name="TransactTime" type="UTCTIMESTAMP" />
+		<field number="64" name="FutSettDate" type="LOCALMKTDATE"/>
 		<field number="66" name="ListID" type="STRING" />
 		<field number="76" name="ExecBroker" type="STRING" />
 		<field number="89" name="Signature" type="DATA" />
@@ -381,6 +421,17 @@
 		<field number="271" name="MDEntrySize" type="QTY"/>
 		<field number="272" name="MDEntryDate" type="UTCDATEONLY"/>
 		<field number="273" name="MDEntryTime" type="UTCTIMEONLY"/>
+		<field number="276" name="QuoteCondition" type="MULTIPLEVALUESTRING">
+			<value enum="A" description="OPEN_ACTIVE"/>
+			<value enum="B" description="CLOSED_INACTIVE"/>
+			<value enum="C" description="EXCHANGE_BEST"/>
+			<value enum="D" description="CONSOLIDATED_BEST"/>
+			<value enum="E" description="LOCKED"/>
+			<value enum="F" description="CROSSED"/>
+			<value enum="G" description="DEPTH"/>
+			<value enum="H" description="FAST_TRADING"/>
+			<value enum="I" description="NONFIRM"/>
+		</field>
 		<field number="279" name="MDUpdateAction" type="CHAR">
 			<value enum="0" description="NEW"/>
 			<value enum="1" description="CHANGE"/>
@@ -422,8 +473,6 @@
 		</field>
 		<field number="432" name="ExpireDate" type="LOCALMKTDATE" />
 		<field number="434" name="CxlRejResponseTo" type="CHAR" />
-		<field number="461" name="CFICode" type="STRING"/>
-		<field number="554" name="Password" type="STRING"/>
 		<field number="790" name="OrdStatusReqID" type="STRING" />
 		
 		<!-- Custom OANDA fields -->
