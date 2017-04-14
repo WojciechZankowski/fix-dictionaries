@@ -11,5 +11,27 @@
 
     <artifactId>fix-interactive-brokers</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.quickfixj</groupId>
+            <artifactId>quickfixj-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.quickfixj</groupId>
+                <artifactId>quickfixj-codegenerator</artifactId>
+                <version>1.6.3</version>
+                <configuration>
+                    <dictFile>${basedir}/src/main/resources/IB_FIX.xml</dictFile>
+                    <outputDirectory>${basedir}/src/main/java/</outputDirectory>
+                    <packaging>quickfix.ib</packaging>
+                    <fieldPackage>quickfix.ib.field</fieldPackage>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
