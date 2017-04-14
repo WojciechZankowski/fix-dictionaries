@@ -11,5 +11,27 @@
 
     <artifactId>fix-dukascopy</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.quickfixj</groupId>
+            <artifactId>quickfixj-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.quickfixj</groupId>
+                <artifactId>quickfixj-codegenerator</artifactId>
+                <version>1.6.3</version>
+                <configuration>
+                    <dictFile>${basedir}/src/main/resources/DUKASCOPY_FIX.xml</dictFile>
+                    <outputDirectory>${basedir}/src/main/java/</outputDirectory>
+                    <packaging>quickfix.dukascopy</packaging>
+                    <fieldPackage>quickfix.dukascopy.field</fieldPackage>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

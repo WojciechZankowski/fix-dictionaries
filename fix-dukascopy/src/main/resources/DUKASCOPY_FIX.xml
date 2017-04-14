@@ -1397,7 +1397,7 @@
         <field number="40" name="OrdType" type="CHAR">
             <value enum="1" description="MARKET"/>
             <value enum="2" description="LIMIT"/>
-            <value enum="3" description="STOP / STOP_LIMIT"/>
+            <value enum="3" description="STOP"/>
             <value enum="4" description="STOP_LIMIT"/>
             <value enum="5" description="MARKET_ON_CLOSE"/>
             <value enum="6" description="WITH_OR_WITHOUT"/>
