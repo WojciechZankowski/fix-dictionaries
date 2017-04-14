@@ -3,9 +3,12 @@
 ## Table of Contents
 
 * [Summary](#summary)
+* [Code Generation](#code-generation)
 * [License](#license)
 
 ## Summary
+
+## Code Generation
 
 ## License
 
